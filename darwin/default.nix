@@ -11,6 +11,7 @@
 
 let
   system = "aarch64-darwin";                                 # System Architecture
+  #system = "x86_64-darwin";                                 # System Architecture
 in
 {
   fluke = darwin.lib.darwinSystem {                       #

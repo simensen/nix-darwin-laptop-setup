@@ -48,6 +48,7 @@
       #ripgrep
       tree
       #libuvc # No support for aarch64-darwin yet
+      libusb1.dev
     ];
   };
 
@@ -74,7 +75,7 @@
     ];
     brews = [
       #"wireguard-tools"
-      "libuvc" # nixpkgs does not support aarch64-darwin yet
+      #"libuvc" # nixpkgs does not support aarch64-darwin yet
     ];
     casks = [
       #"moonlight"
@@ -101,7 +102,11 @@
     extraOptions = ''
       auto-optimise-store = true
       experimental-features = nix-command flakes
+      extra-platforms = x86_64-darwin aarch64-darwin
     '';
+
+    linux-builder.enable = true;
+    settings.trusted-users = [ "@admin" "${vars.user}" ];
   };
 
   system = {                              # Global macOS System Settings
