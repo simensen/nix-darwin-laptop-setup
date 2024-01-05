@@ -113,7 +113,7 @@
         launchanim = true;
         orientation = "bottom";
         showhidden = true;
-        tilesize = 16;
+        tilesize = 24;
         show-process-indicators = false;
         show-recents = false;
         static-only = true;
