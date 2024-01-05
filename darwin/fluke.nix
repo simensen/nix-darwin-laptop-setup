@@ -1,4 +1,5 @@
-#
+
+# #
 #  Specific system configuration settings for MacBook
 #
 #  flake.nix
@@ -20,6 +21,7 @@
   networking = {
     computerName = "Fluke";             # Host Name
     hostName = "fluke";
+    localHostName = "Fluke";
   };
 
   fonts = {                               # Fonts
@@ -31,12 +33,13 @@
     variables = {                         # Environment Variables
       EDITOR = "${vars.editor}";
       VISUAL = "${vars.editor}";
+      HELLO_BEAU_SYSTEM_ENV = "What is even up?";
     };
     systemPackages = with pkgs; [         # System-Wide Packages
       # Terminal
       #ansible
-      git
-      #pfetch
+      #git
+      pfetch
       #ranger
 
       # Doom Emacs
@@ -55,7 +58,7 @@
     nix-daemon.enable = true;             # Auto-Upgrade Daemon
   };
 
-  security.pam.enableSudoTouchIdAuth = true;
+  #security.pam.enableSudoTouchIdAuth = true;
 
   homebrew = {                            # Homebrew Package Manager
     enable = true;
@@ -101,31 +104,179 @@
 
   system = {                              # Global macOS System Settings
     defaults = {
+
+      #
+      # Configuration options can be found here:
+      #
+      # https://daiderd.com/nix-darwin/manual/
+      #
+
       NSGlobalDomain = {
-        KeyRepeat = 1;
+
+        # Whether to show all file extensions in Finder. The default is false.
+        AppleShowAllExtensions = true;
+
+        # Whether to always show hidden files. The default is false.
+        AppleShowAllFiles = true;
+
+        # Whether to automatically switch between light and dark mode.
+        # The default is false.
+        AppleInterfaceStyleSwitchesAutomatically = false;
+
+        # If you press and hold certain keyboard keys when in a text area, the
+        # key’s character begins to repeat. For example, the Delete key
+        # continues to remove text for as long as you hold it down.
+        #
+        # This sets how fast it repeats once it starts.
+        KeyRepeat = 6;
+
+        # If you press and hold certain keyboard keys when in a text area, the
+        # key’s character begins to repeat. For example, the Delete key
+        # continues to remove text for as long as you hold it down.
+        #
+        # This sets how long you must hold down the key before it starts
+        # repeating.
+        InitialKeyRepeat = 25;
+
+        # Whether to enable automatic capitalization. The default is true.
         NSAutomaticCapitalizationEnabled = false;
+
+        # Whether to enable smart dash substitution. The default is true.
+        NSAutomaticDashSubstitutionEnabled = false;
+
+        # Whether to enable smart period substitution. The default is true.
+        NSAutomaticPeriodSubstitutionEnabled = false;
+
+        # Whether to enable smart quote substitution. The default is true.
+        NSAutomaticQuoteSubstitutionEnabled = false;
+
+        # Whether to enable automatic spelling correction. The default is true.
         NSAutomaticSpellingCorrectionEnabled = false;
+
+        # Configures the keyboard control behavior. Mode 3 enables full keyboard
+        # control.
+        AppleKeyboardUIMode = 3;
+
+        # Whether to use expanded save panel by default.
+        # The default is false.
+        NSNavPanelExpandedStateForSaveMode = true;
+
+        # Whether to use expanded save panel by default.
+        # The default is false.
+        NSNavPanelExpandedStateForSaveMode2 = true;
+
+        # Whether to save new documents to iCloud by default.
+        # The default is true.
+        NSDocumentSaveNewDocumentsToCloud = false;
+
+        # Whether to use the expanded print panel by default.
+        # The default is false.
+        PMPrintingExpandedStateForPrint = true;
+
+        # Whether to use the expanded print panel by default.
+        # The default is false.
+        PMPrintingExpandedStateForPrint2 = true;
+
+        # Use F1, F2, etc. keys as standard function keys.
+        "com.apple.keyboard.fnState" = true;
+
+        # Make a feedback sound when the system volume changed. This setting
+        # accepts the integers 0 or 1. Defaults to 1.
+        "com.apple.sound.beep.feedback" = 0;
+
+        # Sets the beep/alert volume level from
+        # 0.000 (muted) to 1.000 (100% volume).
+        "com.apple.sound.beep.volume" = 0.2;
       };
       dock = {
+        # Whether to automatically hide and show the dock.
+        # The default is false.
         autohide = true;
+
+        # Sets the speed of the autohide delay.
         autohide-delay = 10.0;
+
+        # Sets the speed of the animation when hiding/showing the Dock.
         autohide-time-modifier = 0.0;
-        launchanim = true;
-        orientation = "bottom";
-        showhidden = true;
-        tilesize = 24;
+
+        # Magnified icon size on hover. The default is 16.
+        largesize = 40;
+
+        # Animate opening applications from the Dock. The default is true.
+        # launchanim = true;
+
+        # Magnify icon on hover. The default is false
+        magnification = true;
+
+        # Position of the dock on screen. The default is “bottom”.
+        # orientation = "bottom";
+
+        # Show indicator lights for open applications in the Dock.
+        # The default is true.
+        #
+        # Since we only show open applications, we can turn these off.
+        # See show-recents and static-only.
         show-process-indicators = false;
+
+        # Show recent applications in the dock.
+        # The default is true.
         show-recents = false;
+
+        # Whether to make icons of hidden applications tranclucent.
+        # The default is false.
+        showhidden = true;
+
+        # Show only open applications in the Dock.
+        # The default is false.
         static-only = true;
+
+        # Size of the icons in the dock.
+        # The default is 64.
+        tilesize = 32;
       };
       finder = {
-        QuitMenuItem = false;
+        # Whether to always show file extensions.
+        # The default is false.
+        AppleShowAllExtensions = true;
+
+        # Whether to always show hidden files.
+        # The default is false.
+        AppleShowAllFiles = true;
+
+        # Change the default search scope. Use “SCcf” to default to current
+        # folder. The default is unset (“This Mac”).
+        FXDefaultSearchScope = "SCcf";
+
+        # Whether to allow quitting of the Finder.
+        # The default is false.
+        QuitMenuItem = true;
+
+        # Show path breadcrumbs in finder windows.
+        # The default is false.
+        ShowPathbar = true;
+
+        # Whether to show the full POSIX filepath in the window title.
+        # The default is false.
+        _FXShowPosixPathInTitle = true;
       };
       trackpad = {
+        # Whether to enable trackpad tap to click.
+        # The default is false.
         Clicking = true;
+
+        # Whether to enable trackpad right click.
+        # The default is false.
         TrackpadRightClick = true;
+
+        # Whether to enable three finger drag.
+        # The default is false.
         TrackpadThreeFingerDrag = true;
       };
+      #universalaccess = {
+      #  # Set the size of cursor. 1 for normal, 4 for maximum.
+      #  # The default is 1.
+      #  mouseDriverCursorSize = 2.0;
+      #};
     };
     activationScripts.postActivation.text = ''sudo chsh -s ${pkgs.zsh}/bin/zsh''; # Set Default Shell
     stateVersion = 4;
@@ -134,6 +285,9 @@
   home-manager.users.${vars.user} = {
 
     home = {
+      sessionVariables = {
+        HELLO_BEAU_SESSION_ENV = "What is even up?";
+      };
       stateVersion = "22.05";
       
       file.".config/zsh_nix/custom/themes/minimal.zsh-theme".source = ../config/minimal/minimal.zsh;
