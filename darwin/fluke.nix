@@ -29,7 +29,7 @@
   };
 
   environment = {
-    shells = with pkgs; [ zsh ];          # Default Shell
+    shells = with pkgs; [ zsh bash ];          # Default Shell
     variables = {                         # Environment Variables
       EDITOR = "${vars.editor}";
       VISUAL = "${vars.editor}";
@@ -47,6 +47,7 @@
       #fd
       #ripgrep
       tree
+      #libuvc # No support for aarch64-darwin yet
     ];
   };
 
@@ -73,6 +74,7 @@
     ];
     brews = [
       #"wireguard-tools"
+      "libuvc" # nixpkgs does not support aarch64-darwin yet
     ];
     casks = [
       #"moonlight"
@@ -128,7 +130,7 @@
         # continues to remove text for as long as you hold it down.
         #
         # This sets how fast it repeats once it starts.
-        KeyRepeat = 6;
+        KeyRepeat = 3;
 
         # If you press and hold certain keyboard keys when in a text area, the
         # key’s character begins to repeat. For example, the Delete key
@@ -136,7 +138,7 @@
         #
         # This sets how long you must hold down the key before it starts
         # repeating.
-        InitialKeyRepeat = 25;
+        InitialKeyRepeat = 20;
 
         # Whether to enable automatic capitalization. The default is true.
         NSAutomaticCapitalizationEnabled = false;

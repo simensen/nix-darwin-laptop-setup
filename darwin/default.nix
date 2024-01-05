@@ -10,7 +10,7 @@
 { lib, inputs, nixpkgs, darwin, home-manager, vars, ...}:
 
 let
-  system = "x86_64-darwin";                                 # System Architecture
+  system = "aarch64-darwin";                                 # System Architecture
 in
 {
   fluke = darwin.lib.darwinSystem {                       #
