@@ -185,7 +185,7 @@
         PMPrintingExpandedStateForPrint2 = true;
 
         # Use F1, F2, etc. keys as standard function keys.
-        "com.apple.keyboard.fnState" = true;
+        "com.apple.keyboard.fnState" = false;
 
         # Make a feedback sound when the system volume changed. This setting
         # accepts the integers 0 or 1. Defaults to 1.
