@@ -48,7 +48,8 @@
       #ripgrep
       tree
       #libuvc # No support for aarch64-darwin yet
-      libusb1.dev
+      #pkg-config
+      #libusb1.dev
     ];
   };
 
