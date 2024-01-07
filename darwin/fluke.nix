@@ -314,6 +314,20 @@
 
     programs = {
 
+      wezterm = {
+        enable = true;
+        enableZshIntegration = true;
+        enableBashIntegration = true;
+        extraConfig = ''
+          return {
+            font = wezterm.font("JetBrains Mono"),
+            font_size = 16.0,
+            color_scheme = "Builtin Solarized Light",
+            hide_tab_bar_if_only_one_tab = true
+          }
+          '';
+        };
+
       bash.enable = true;
       yt-dlp.enable = true;
       go.enable = true;
