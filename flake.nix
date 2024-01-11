@@ -38,7 +38,7 @@
     in
     {
       darwinConfigurations = (                                              # Darwin Configurations
-        import ./darwin {
+      import ./darwin {
           inherit (nixpkgs) lib;
           inherit inputs nixpkgs nixpkgs-unstable home-manager darwin vars;
         }

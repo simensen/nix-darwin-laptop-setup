@@ -91,6 +91,11 @@
       #"font-source-sans-pro"
       #"font-source-serif-pro"
 
+      "betterdisplay"
+      "bettertouchtool"
+      "rocket"
+      "superkey"
+      "swiftdefaultappsprefpane"
       "timemachineeditor"
     ];
   };
@@ -311,6 +316,12 @@
         sqlite
         yq
         #zsh-git-prompt -- broken
+        jetbrains.phpstorm
+        jetbrains.goland
+        jetbrains.idea-ultimate
+        jetbrains.rust-rover
+        jetbrains.rider
+        #jetbrains.jdk -- broken
       ];
     };
 
