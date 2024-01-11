@@ -90,6 +90,8 @@
       "font-source-code-pro"
       #"font-source-sans-pro"
       #"font-source-serif-pro"
+
+      "timemachineeditor"
     ];
   };
 
@@ -125,7 +127,7 @@
         AppleShowAllExtensions = true;
 
         # Whether to always show hidden files. The default is false.
-        AppleShowAllFiles = true;
+        AppleShowAllFiles = false;
 
         # Whether to automatically switch between light and dark mode.
         # The default is false.
@@ -299,6 +301,8 @@
       stateVersion = "22.05";
       
       file.".config/zsh_nix/custom/themes/minimal.zsh-theme".source = ../config/minimal/minimal.zsh;
+      file.".config/zsh_nix/custom/plugins/git-prompt.zsh/git-prompt.zsh".source = ../config/git-prompt.zsh/git-prompt.zsh;
+      file.".config/zsh_nix/custom/plugins/git-prompt.zsh/git-prompt.plugin.zsh".source = ../config/git-prompt.zsh/git-prompt.plugin.zsh;
 
       packages = with pkgs; [
         coreutils
@@ -306,7 +310,7 @@
         powerline-fonts
         sqlite
         yq
-        zsh-git-prompt
+        #zsh-git-prompt -- broken
       ];
     };
 
@@ -320,10 +324,55 @@
         enableBashIntegration = true;
         extraConfig = ''
           return {
-            font = wezterm.font("JetBrains Mono"),
-            font_size = 16.0,
-            color_scheme = "Builtin Solarized Light",
-            hide_tab_bar_if_only_one_tab = true
+            font = wezterm.font_with_fallback {
+              -- 'Dank Mono',
+              'JetBrains Mono',
+              'Hack Nerd Font Mono',
+            },
+            font_size = 18,
+            line_height = 1.4,
+            default_cwd = wezterm.home_dir,
+            color_scheme = 'Google (light) (terminal.sexy)',
+            bold_brightens_ansi_colors = false,  -- don't keep me from having bold text
+            window_background_gradient = {
+              colors = { '#ffffff', '#e0e0e8' },
+              -- colors = { '#ffffff', '#f0f0f2' },
+              -- colors = { '#002b36', '#073642' },
+              -- colors = { '#000000', '#3B4351' },
+              -- colors = { '#000000', '#242320' },
+              -- colors = { '#000000', '#aaaaaa' },
+              orientation = 'Vertical',
+              blend = 'LinearRgb',
+            },
+
+            -- Cursor
+            -- Disabling cursor blink makes a _massive_ difference in GPU usage (20% vs 3%).
+            -- Therefore, I'll disable it to save energy.
+            cursor_blink_rate = 0,
+
+            -- Tab Bar
+            hide_tab_bar_if_only_one_tab = true,
+            use_fancy_tab_bar = true,
+
+            -- Visual Bell Only
+            audible_bell = 'Disabled',
+            visual_bell = {
+              -- fade_in_duration_ms = 25,
+              -- fade_out_duration_ms = 50,
+              fade_in_duration_ms = 50,
+              fade_out_duration_ms = 75,
+              fade_in_function = 'EaseInOut',
+              fade_out_function = 'EaseInOut',
+              -- fade_in_function = 'EaseIn',
+              -- fade_out_function = 'EaseOut',
+              -- target = 'CursorColor',
+            },
+            colors = {
+              -- colors = { '#ffffff', '#e0e0e8' },
+              visual_bell = '#d0d0df',
+            },
+            check_for_updates = false,
+            show_update_window = true,
           }
           '';
         };
@@ -342,16 +391,16 @@
       zsh = {                             # Shell
         enable = true;
         autocd = true;
-        enableAutosuggestions = true;
+        enableAutosuggestions = false;
         syntaxHighlighting.enable = true;
         history.size = 10000;
 
         oh-my-zsh = {                     # Plug-ins
-        enable = true;
-          theme = "minimal";
-          plugins = [ "git" ];
-          custom = "$HOME/.config/zsh_nix/custom";
-        };
+          enable = true;
+            theme = "minimal";
+            plugins = [ "git" ];
+            custom = "$HOME/.config/zsh_nix/custom";
+          };
 
         #initExtra = ''
         #  # Spaceship
@@ -370,22 +419,27 @@
           # Remove history data we don't want to see
           export HISTIGNORE="pwd:ls:cd"
 
-          if [[ -f "${pkgs.zsh-git-prompt}/share/zsh-git-prompt/zshrc.sh" ]]; then
-            . "${pkgs.zsh-git-prompt}/share/zsh-git-prompt/zshrc.sh"
+          #if [[ -f "${pkgs.zsh-git-prompt}/share/zsh-git-prompt/zshrc.sh" ]]; then
+            #. "${pkgs.zsh-git-prompt}/share/zsh-git-prompt/zshrc.sh"
+          #fi
+
+          if [[ -f "$HOME/.config/zsh_nix/custom/plugins/git-prompt.zsh/git-prompt.zsh" ]]; then
+            . "$HOME/.config/zsh_nix/custom/plugins/git-prompt.zsh/git-prompt.zsh"
           fi
 
           mnml_time() {
             echo " %D{%L:%M:%S %p}"
           }
 
-          export MNML_PROMPT=(mnml_status 'mnml_cwd 6 0' git_super_status mnml_keymap)
+          export MNML_PROMPT=(mnml_status 'mnml_cwd 6 0' gitprompt mnml_keymap)
           export MNML_RPROMPT=()
           export MNML_MAGICENTER=()
           export MNML_INFOLN=()
-          TMOUT=1
-          TRAPALRM() {
-            zle reset-prompt
-          }
+
+          #TMOUT=1
+          #TRAPALRM() {
+            #zle reset-prompt
+          #}
 
           setopt TRANSIENT_RPROMPT
           '';
@@ -396,17 +450,50 @@
           export ZSH_THEME_GIT_PROMPT_SUFFIX=""
           export ZSH_THEME_GIT_PROMPT_SEPARATOR=" "
 
-          #ZSH_THEME_GIT_PROMPT_PREFIX="("
-          #ZSH_THEME_GIT_PROMPT_SUFFIX=")"
-          #ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
-          ZSH_THEME_GIT_PROMPT_BRANCH="\ue0a0%{$fg_bold[magenta]%}"
-          ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}%{●%G%}"
-          ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg[red]%}%{✖%G%}"
-          ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[red]%}%{✚%G%}"
-          ZSH_THEME_GIT_PROMPT_BEHIND="%{↓%G%}"
-          ZSH_THEME_GIT_PROMPT_AHEAD="%{↑%G%}"
-          ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[white]%}%{…%G%}"
-          ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}%{✔%G%}"
+          ##
+          ## original
+          ##
+          ##ZSH_THEME_GIT_PROMPT_PREFIX="("
+          ##ZSH_THEME_GIT_PROMPT_SUFFIX=")"
+          ##ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
+          #ZSH_THEME_GIT_PROMPT_BRANCH="\ue0a0%{$fg_bold[magenta]%}"
+          #ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}%{●%G%}"
+          #ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg[red]%}%{✖%G%}"
+          #ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[red]%}%{✚%G%}"
+          #ZSH_THEME_GIT_PROMPT_BEHIND="%{↓%G%}"
+          #ZSH_THEME_GIT_PROMPT_AHEAD="%{↑%G%}"
+          #ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[white]%}%{…%G%}"
+          #ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}%{✔%G%}"
+
+          # Theming variables for primary prompt
+          ZSH_THEME_GIT_PROMPT_PREFIX="["
+          ZSH_THEME_GIT_PROMPT_SUFFIX="] "
+          ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
+          ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"
+          #ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
+          ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
+          ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="%{$fg_bold[yellow]%}⟳ "
+          ZSH_THEME_GIT_PROMPT_UPSTREAM_NO_TRACKING="%{$fg_bold[red]%}!"
+          ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX="%{$fg[red]%}(%{$fg[yellow]%}"
+          ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX="%{$fg[red]%})"
+          ZSH_THEME_GIT_PROMPT_BEHIND="↓"
+          ZSH_THEME_GIT_PROMPT_AHEAD="↑"
+          ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖"
+          ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}●"
+          ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚"
+          ZSH_THEME_GIT_PROMPT_UNTRACKED="…"
+          ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑"
+          ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"
+
+          # Theming variables for the secondary prompt
+          ZSH_THEME_GIT_PROMPT_SECONDARY_PREFIX=""
+          ZSH_THEME_GIT_PROMPT_SECONDARY_SUFFIX=""
+          ZSH_THEME_GIT_PROMPT_TAGS_SEPARATOR=", "
+          ZSH_THEME_GIT_PROMPT_TAGS_PREFIX="🏷 "
+          ZSH_THEME_GIT_PROMPT_TAGS_SUFFIX=""
+          ZSH_THEME_GIT_PROMPT_TAG="%{$fg_bold[magenta]%}"
+
+          ZSH_GIT_PROMPT_ENABLE_SECONDARY=1
 
           unsetopt nomatch
 
