@@ -78,6 +78,7 @@
     brews = [
       #"wireguard-tools"
       #"libuvc" # nixpkgs does not support aarch64-darwin yet
+      #"handbrake"
     ];
     casks = [
       #"moonlight"
@@ -92,13 +93,26 @@
       #"font-source-sans-pro"
       #"font-source-serif-pro"
 
+      "adobe-creative-cloud"
+      "balenaetcher"
       "betterdisplay"
       "bettertouchtool"
+      "dropbox"
+      "figma"
+      "makemkv"
       "rocket"
       "superkey"
       "swiftdefaultappsprefpane"
       "timemachineeditor"
+      "vlc"
     ];
+    masApps = {
+      "Goodnotes 6" = 1444383602;
+      "Microsoft Excel" = 462058435;
+      "Microsoft PowerPoint" = 462062816;
+      "Microsoft Word" = 462054704;
+      "Userscripts" = 1463298887;
+    };
   };
 
   nix = {
@@ -109,9 +123,9 @@
       options = "--delete-older-than 7d";
     };
     extraOptions = ''
-      auto-optimise-store = true
+      # auto-optimise-store = true
       experimental-features = nix-command flakes
-      extra-platforms = x86_64-darwin aarch64-darwin
+      extra-platforms = aarch64-darwin
     '';
 
     linux-builder.enable = true;
@@ -120,6 +134,19 @@
 
   system = {                              # Global macOS System Settings
     defaults = {
+
+      CustomSystemPreferences = {
+        NSGlobalDomain = {
+          WebAutomaticSpellingCorrectionEnabled = false;
+          WebContinuousSpellCheckingEnabled = false;
+          WebGrammarCheckingEnabled = false;
+        };
+        "com.apple.Safari" = {
+          "com.apple.Safari.WebAutomaticSpellingCorrectionEnabled" = false;
+          "com.apple.Safari.WebContinuousSpellCheckingEnabled" = false;
+          "com.apple.Safari.WebGrammarCheckingEnabled" = false;
+        };
+      };
 
       #
       # Configuration options can be found here:
