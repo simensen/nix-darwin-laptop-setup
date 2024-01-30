@@ -127,10 +127,23 @@
       "vlc"
     ];
     masApps = {
-      "Goodnotes 6" = 1444383602;
+      "1Password for Safari" = 1569813296;
+      "AdGuard for Safari" = 1440147259;
+      "Adblock Plus" = 1432731683;
+      "Drafts" = 1435957248;
+      "FakespotSafari" = 1592541616;
+      "Fantastical" = 975937182;
+      "GoodLinks" = 1474335294;
+      "Goodnotes" = 1444383602;
+      "Infuse" = 1136220934;
       "Microsoft Excel" = 462058435;
       "Microsoft PowerPoint" = 462062816;
       "Microsoft Word" = 462054704;
+      "Mona" = 1659154653;
+      "Pins" = 1547106997;
+      "Pinstachio" = 1535386074;
+      "Reeder" = 1529448980;
+      "Slack" = 803453959;
       "Userscripts" = 1463298887;
     };
   };
