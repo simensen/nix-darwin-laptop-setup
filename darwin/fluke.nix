@@ -118,8 +118,11 @@
       "bettertouchtool"
       "dropbox"
       "figma"
+      "firefox"
       "makemkv"
+      "microsoft-edge"
       "orbstack"
+      "rekordbox"
       "rocket"
       "superkey"
       "swiftdefaultappsprefpane"
@@ -135,6 +138,7 @@
       "Fantastical" = 975937182;
       "GoodLinks" = 1474335294;
       "Goodnotes" = 1444383602;
+      "Hologram Desktop" = 1529001798;
       "Infuse" = 1136220934;
       "Microsoft Excel" = 462058435;
       "Microsoft PowerPoint" = 462062816;
@@ -265,6 +269,10 @@
         "com.apple.sound.beep.volume" = 0.2;
       };
       dock = {
+        # Whether to display the appswitcher on all displays or only the main one.
+        # The default is false.
+        appswitcher-all-displays = false;
+
         # Whether to automatically hide and show the dock.
         # The default is false.
         autohide = true;
@@ -445,6 +453,7 @@
             },
             check_for_updates = false,
             show_update_window = true,
+            front_end = 'OpenGL',
           }
           '';
         };
