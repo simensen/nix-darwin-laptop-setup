@@ -124,6 +124,7 @@
       "orbstack"
       "rekordbox"
       "rocket"
+      "signal"
       "superkey"
       "swiftdefaultappsprefpane"
       "timemachineeditor"
