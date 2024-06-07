@@ -121,6 +121,8 @@
       "firefox"
       "makemkv"
       "microsoft-edge"
+      "obsidian"
+      "openphone"
       "orbstack"
       "rekordbox"
       "rocket"
