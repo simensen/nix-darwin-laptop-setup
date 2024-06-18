@@ -24,10 +24,6 @@
     localHostName = "Fluke";
   };
 
-  fonts = {                               # Fonts
-    fontDir.enable = true;
-  };
-
   environment = {
     etc = {
       "hosts" = {
@@ -471,130 +467,140 @@
 
       direnv.enable = true;
       direnv.nix-direnv.enable = true;
+      
+      starship.enable = true;
+      starship.enableZshIntegration = true;
+      starship.enableBashIntegration = false;
+      starship.settings = {
+        right_format = "$container$os";
+        directory = {
+          style = "bright-black";
+        };
+        container = {
+          style = "#cccccc";
+        };
+        character = {
+          #success_symbol = "[❯](purple)";
+          #error_symbol = "[❯](red)";
+          #vimcmd_symbol = "[❮](green)";
+          success_symbol = "[›](purple)";
+          error_symbol = "[›](red)";
+          vimcmd_symbol = "[‹](green)";
+        };
+        cmd_duration = {
+          format = "[$duration]($style) ";
+          style = "yellow";
+        };
+        docker_context = {
+          format = "[$symbol$context]($style) ";
+        };
+        git_branch = {
+          style = "#A36AC7";
+          symbol = ""; # no space
+          format = "[$symbol](#1D1F21)[$branch(:$remote_branch)]($style) ";
+        };
+        git_commit = {
+          tag_symbol = ""; # no space
+        };
+        # git_metrics = {
+        #   disabled = false;
+        # };
+        git_status = {
+          format = "([$all_status$ahead_behind]($style) )";
+          style = "black";
+          conflicted = "[≡](orange)";
+          ahead = "[⇡](blue)";
+          behind = "[⇣](blue)";
+          diverged = "[⇕](red)";
+          untracked = "[…](bright-black)";
+          modified = "[](red)";
+          staged = "[+](green)";
+          renamed = "[»](red)";
+          deleted = "[x](red)";
+          stashed = "[.](orange)";
+
+          #format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)";
+          #style = "cyan";
+          #conflicted = "​";
+          #untracked = "​";
+          #modified = "​";
+          #modified = "[!](green)";
+          #staged = "​";
+          #renamed = "​";
+          #deleted = "​";
+          #stashed = "≡";
+        };
+        python = {
+          format = "[$virtualenv]($style) ";
+          style = "bright-black";
+        };
+        os = {
+          style = "#cccccc";
+          disabled = false;
+          symbols = {
+            Alpine = " ";
+            Debian = " ";
+            Linux = " ";
+            Macos = " ";
+            Ubuntu = " ";
+            Windows = "󰍲 ";
+          };
+        };
+        php = {
+          symbol = " ";
+          format = "[$symbol($version )]($style)";
+        };
+        directory.read_only = " 󰌾";
+        docker_context.symbol = " ";
+        golang.symbol = " ";
+        nix_shell = {
+          format = "[$symbol$state]($style) ";
+          symbol = " ";
+          impure_msg = "󰫇";
+          pure_msg = "󰫈";
+        };
+        nodejs = {
+          format = "[$symbol($version )]($style)";
+          symbol = " ";
+        };
+        package.disabled = true;
+        python.symbol = " ";
+        rust.symbol = " ";
+
+        hostname = {
+          format = "[$hostname]($style) ";
+          style = "black";
+        };
+
+        username = {
+          format = "[$user]($style)[@](#dddddd)";
+          style_user = "black";
+          style_root = "black";
+        };
+      };
 
       zsh = {                             # Shell
         enable = true;
         autocd = true;
+        #autosuggestion.enable = false;
         enableAutosuggestions = false;
         syntaxHighlighting.enable = true;
         history.size = 10000;
 
-        oh-my-zsh = {                     # Plug-ins
-          enable = true;
-            theme = "minimal";
-            plugins = [ "git" ];
-            custom = "$HOME/.config/zsh_nix/custom";
-          };
-
-        #initExtra = ''
-        #  # Spaceship
-        #  source ${pkgs.spaceship-prompt}/share/zsh/site-functions/prompt_spaceship_setup
-        #  autoload -U promptinit; promptinit
-        #  pfetch
-        #'';                               # Theming
-
         initExtraFirst = ''
-          #export PATH=$HOME/.npm-packages/bin:$PATH
-          #export PATH=$NIX_USER_PROFILE_DIR/profile/bin:$PATH
-          #export PATH=$HOME/bin:$PATH
-          #export NVM_DIR="$HOME/.nvm"
-          #[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
           # Remove history data we don't want to see
           export HISTIGNORE="pwd:ls:cd"
-
-          #if [[ -f "${pkgs.zsh-git-prompt}/share/zsh-git-prompt/zshrc.sh" ]]; then
-            #. "${pkgs.zsh-git-prompt}/share/zsh-git-prompt/zshrc.sh"
-          #fi
-
-          if [[ -f "$HOME/.config/zsh_nix/custom/plugins/git-prompt.zsh/git-prompt.zsh" ]]; then
-            . "$HOME/.config/zsh_nix/custom/plugins/git-prompt.zsh/git-prompt.zsh"
-          fi
-
-          mnml_time() {
-            echo " %D{%L:%M:%S %p}"
-          }
-
-          export MNML_PROMPT=(mnml_status 'mnml_cwd 6 0' gitprompt mnml_keymap)
-          export MNML_RPROMPT=()
-          export MNML_MAGICENTER=()
-          export MNML_INFOLN=()
-
-          #TMOUT=1
-          #TRAPALRM() {
-            #zle reset-prompt
-          #}
-
-          setopt TRANSIENT_RPROMPT
-          '';
+        '';
 
         initExtra = ''
-
-          export ZSH_THEME_GIT_PROMPT_PREFIX=""
-          export ZSH_THEME_GIT_PROMPT_SUFFIX=""
-          export ZSH_THEME_GIT_PROMPT_SEPARATOR=" "
-
-          ##
-          ## original
-          ##
-          ##ZSH_THEME_GIT_PROMPT_PREFIX="("
-          ##ZSH_THEME_GIT_PROMPT_SUFFIX=")"
-          ##ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
-          #ZSH_THEME_GIT_PROMPT_BRANCH="\ue0a0%{$fg_bold[magenta]%}"
-          #ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}%{●%G%}"
-          #ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg[red]%}%{✖%G%}"
-          #ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[red]%}%{✚%G%}"
-          #ZSH_THEME_GIT_PROMPT_BEHIND="%{↓%G%}"
-          #ZSH_THEME_GIT_PROMPT_AHEAD="%{↑%G%}"
-          #ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[white]%}%{…%G%}"
-          #ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}%{✔%G%}"
-
-          # Theming variables for primary prompt
-          ZSH_THEME_GIT_PROMPT_PREFIX="["
-          ZSH_THEME_GIT_PROMPT_SUFFIX="] "
-          ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
-          ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"
-          #ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
-          ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
-          ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="%{$fg_bold[yellow]%}⟳ "
-          ZSH_THEME_GIT_PROMPT_UPSTREAM_NO_TRACKING="%{$fg_bold[red]%}!"
-          ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX="%{$fg[red]%}(%{$fg[yellow]%}"
-          ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX="%{$fg[red]%})"
-          ZSH_THEME_GIT_PROMPT_BEHIND="↓"
-          ZSH_THEME_GIT_PROMPT_AHEAD="↑"
-          ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖"
-          ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}●"
-          ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚"
-          ZSH_THEME_GIT_PROMPT_UNTRACKED="…"
-          ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑"
-          ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"
-
-          # Theming variables for the secondary prompt
-          ZSH_THEME_GIT_PROMPT_SECONDARY_PREFIX=""
-          ZSH_THEME_GIT_PROMPT_SECONDARY_SUFFIX=""
-          ZSH_THEME_GIT_PROMPT_TAGS_SEPARATOR=", "
-          ZSH_THEME_GIT_PROMPT_TAGS_PREFIX="🏷 "
-          ZSH_THEME_GIT_PROMPT_TAGS_SUFFIX=""
-          ZSH_THEME_GIT_PROMPT_TAG="%{$fg_bold[magenta]%}"
-
-          ZSH_GIT_PROMPT_ENABLE_SECONDARY=1
-
           unsetopt nomatch
 
-          for file in ~/.setup/.{exports,aliases,functions}; do
-              [ -r "$file" ] && [ -f "$file" ] && source "$file"
-          done
-
-          for file in ~/.setup-custom/.{exports,aliases,functions,zshrc}; do
+          for file in ~/{.setup,.setup-custom}/.{exports,aliases,functions}; do
               [ -r "$file" ] && [ -f "$file" ] && source "$file"
           done
 
           # Load the shell dotfiles, and then some:
-          for file in ~/.setup/.{shellrc,projects}.d/*; do
-              [ -r "$file" ] && [ -f "$file" ] && source "$file"
-          done
-
-          for file in ~/.setup-custom/.{shellrc,projects}.d/*; do
+          for file in ~/{.setup,.setup-custom}/.{shellrc,projects}.d/*; do
               [ -r "$file" ] && [ -f "$file" ] && source "$file"
           done
         '';
@@ -715,33 +721,22 @@
           # Syntax
           vim-nix
           vim-markdown
+          editorconfig-vim
+          papercolor-theme
+          onedarkpro-nvim
 
           # Quality of life
           vim-lastplace                   # Opens document where you left it
           auto-pairs                      # Print double quotes/brackets/etc.
           vim-gitgutter                   # See uncommitted changes of file :GitGutterEnable
 
-          # File Tree
-          #nerdtree                        # File Manager - set in extraConfig to F6
-
-          # Customization
-          wombat256-vim                   # Color scheme for lightline
-          #srcery-vim                      # Color scheme for text
-
           lightline-vim                   # Info bar at bottom
-          #indent-blankline-nvim           # Indentation lines
         ];
 
         extraConfig = ''
           syntax enable                             " Syntax highlighting
-
-          let g:lightline = {
-            \ 'colorscheme': 'wombat',
-            \ }                                     " Color scheme lightline
-
           set number                                " Set numbers
-
-          nmap <F6> :NERDTreeToggle<CR>             " F6 opens NERDTree
+          colorscheme onelight
         '';
       };
     };
