@@ -472,9 +472,15 @@
       starship.enableZshIntegration = true;
       starship.enableBashIntegration = false;
       starship.settings = {
-        right_format = "$container$os";
+        format = "$all[λ](bright-black) $directory$character";
+        right_format = "$docker_context$container$os";
         directory = {
           style = "bright-black";
+          truncation_length = 4;
+          truncation_symbol = "…/";
+          before_repo_root_style = "#cccccc";
+          repo_root_style = "bright-black";
+          repo_root_format = "[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) ";
         };
         container = {
           style = "#cccccc";
@@ -492,12 +498,14 @@
           style = "yellow";
         };
         docker_context = {
+          style = "dimmed blue";
           format = "[$symbol$context]($style) ";
+          symbol = " ";
         };
         git_branch = {
-          style = "#A36AC7";
+          style = "bold #A36AC7";
           symbol = ""; # no space
-          format = "[$symbol](#1D1F21)[$branch(:$remote_branch)]($style) ";
+          format = "[$symbol](bright-black)[$branch(:$remote_branch)]($style) ";
         };
         git_commit = {
           tag_symbol = ""; # no space
@@ -508,16 +516,16 @@
         git_status = {
           format = "([$all_status$ahead_behind]($style) )";
           style = "black";
-          conflicted = "[≡](orange)";
+          conflicted = "[≡](#FBA922)";
           ahead = "[⇡](blue)";
           behind = "[⇣](blue)";
           diverged = "[⇕](red)";
           untracked = "[…](bright-black)";
-          modified = "[](red)";
+          modified = "[+](red)";
           staged = "[+](green)";
           renamed = "[»](red)";
           deleted = "[x](red)";
-          stashed = "[.](orange)";
+          stashed = "[…](#FBA922)";
 
           #format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)";
           #style = "cyan";
@@ -535,7 +543,7 @@
           style = "bright-black";
         };
         os = {
-          style = "#cccccc";
+          style = "bright-black";
           disabled = false;
           symbols = {
             Alpine = " ";
@@ -548,10 +556,9 @@
         };
         php = {
           symbol = " ";
-          format = "[$symbol($version )]($style)";
+          format = "[$symbol]($style)";
         };
         directory.read_only = " 󰌾";
-        docker_context.symbol = " ";
         golang.symbol = " ";
         nix_shell = {
           format = "[$symbol$state]($style) ";
@@ -560,7 +567,7 @@
           pure_msg = "󰫈";
         };
         nodejs = {
-          format = "[$symbol($version )]($style)";
+          format = "[$symbol]($style)";
           symbol = " ";
         };
         package.disabled = true;
