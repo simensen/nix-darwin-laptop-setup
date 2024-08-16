@@ -13,11 +13,10 @@
 
   inputs =                                                                  # References Used by Flake
     {
-      nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";                     # Unstable Nix Packages (Default)
-      nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";         # Stable Nix Packages
+      nixpkgs.url = "github:NixOS/nixpkgs";
 
       home-manager = {                                                      # User Environment Manager
-        url = "github:nix-community/home-manager/release-23.11";
+        url = "github:nix-community/home-manager";
         inputs.nixpkgs.follows = "nixpkgs";
       };
 
@@ -27,7 +26,7 @@
       };
     };
 
-  outputs = inputs @ { self, nixpkgs, nixpkgs-unstable, home-manager, darwin, ... }:   # Function telling flake which inputs to use
+  outputs = inputs @ { self, nixpkgs, home-manager, darwin, ... }:   # Function telling flake which inputs to use
     let
       vars = {                                                              # Variables Used In Flake
         user = "beausimensen";
@@ -40,7 +39,7 @@
       darwinConfigurations = (                                              # Darwin Configurations
       import ./darwin {
           inherit (nixpkgs) lib;
-          inherit inputs nixpkgs nixpkgs-unstable home-manager darwin vars;
+          inherit inputs nixpkgs home-manager darwin vars;
         }
       );
     };

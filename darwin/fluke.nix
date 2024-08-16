@@ -371,7 +371,7 @@
       sessionVariables = {
         HELLO_BEAU_SESSION_ENV = "What is even up?";
       };
-      stateVersion = "22.05";
+      stateVersion = "24.05";
       
       file.".config/zsh_nix/custom/themes/minimal.zsh-theme".source = ../config/minimal/minimal.zsh;
       file.".config/zsh_nix/custom/plugins/git-prompt.zsh/git-prompt.zsh".source = ../config/git-prompt.zsh/git-prompt.zsh;
