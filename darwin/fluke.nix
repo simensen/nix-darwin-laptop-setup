@@ -27,7 +27,6 @@
   environment = {
     etc = {
       "hosts" = {
-        copy = true;
         text = ''
             ##
             # Host Database
@@ -48,7 +47,6 @@
     variables = {                         # Environment Variables
       EDITOR = "${vars.editor}";
       VISUAL = "${vars.editor}";
-      HELLO_BEAU_SYSTEM_ENV = "What is even up?";
     };
     systemPackages = with pkgs; [         # System-Wide Packages
       # Terminal
@@ -56,7 +54,7 @@
       #git
       pfetch
       #ranger
-      fh
+      #fh
 
       # Doom Emacs
       #emacs
@@ -380,6 +378,10 @@
       packages = with pkgs; [
         coreutils
         curl
+        graphviz
+        id3v2
+        lolcat
+        lorri
         powerline-fonts
         sqlite
         yq
@@ -396,6 +398,27 @@
     editorconfig.enable = true;
 
     programs = {
+      fzf = {
+        enable = true;
+        enableBashIntegration = true;
+        enableZshIntegration = true;
+        colors = {
+          "fg" = "#4d4d4c,bg:#ffffff,hl:#d7005f";
+          "fg+" = "#4d4d4c,bg+:#eeeeee,hl+:#d7005f";
+          info = "#4271ae,prompt:#8959a8,pointer:#d7005f";
+          marker = "#4271ae,spinner:#4271ae,header:#4271ae";
+        };
+      };
+
+      bat = {
+        enable = true;
+        config = {
+          pager = "less -FR";
+          theme = "GitHub";
+        };
+      };
+
+      ripgrep.enable = true;
 
       wezterm = {
         enable = true;
@@ -452,7 +475,7 @@
             },
             check_for_updates = false,
             show_update_window = true,
-            front_end = 'OpenGL',
+            front_end = 'WebGpu',
           }
           '';
         };
@@ -589,8 +612,7 @@
       zsh = {                             # Shell
         enable = true;
         autocd = true;
-        #autosuggestion.enable = false;
-        enableAutosuggestions = false;
+        autosuggestion.enable = false;
         syntaxHighlighting.enable = true;
         history.size = 10000;
 
@@ -620,6 +642,33 @@
         lfs = {
           enable = true;
         };
+        delta = {
+          enable = true;
+
+          options = {
+            features = "decorations";
+            navigate = true;
+
+            light = true;
+
+            line-numbers = true;
+
+            file-style = "238";
+            file-decoration-style = "254 ul";
+
+            line-numbers-minus-style = "167";
+            line-numbers-zero-style = "254";
+            line-numbers-plus-style = "70";
+            line-numbers-left-format = "{nm:>4}┊";
+            line-numbers-right-format = "{np:>4}│";
+            line-numbers-left-style = "252";
+            line-numbers-right-style = "252";
+
+            hunk-header-style = "none";
+            hunk-header-line-number-style = "none";
+            hunk-header-decoration-style = "none";
+          };
+        };
         extraConfig = {
           init.defaultBranch = "main";
           core = { 
@@ -629,9 +678,6 @@
             safecrlf = false;
           };
           color.status.untracked = "white normal";
-        };
-        difftastic = {
-          enable = true;
         };
         ignores = [
           "# Compiled source #""
@@ -734,7 +780,7 @@
 
           # Quality of life
           vim-lastplace                   # Opens document where you left it
-          auto-pairs                      # Print double quotes/brackets/etc.
+          #auto-pairs                      # Print double quotes/brackets/etc.
           vim-gitgutter                   # See uncommitted changes of file :GitGutterEnable
 
           lightline-vim                   # Info bar at bottom
