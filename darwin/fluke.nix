@@ -13,6 +13,7 @@
 { config, pkgs, vars, ... }:
 
 {
+
   users.users.${vars.user} = {            # MacOS User
     home = "/Users/${vars.user}";
     shell = pkgs.zsh;                     # Default Shell
@@ -67,8 +68,37 @@
     ];
   };
 
-  programs = {
-    zsh.enable = true;
+  # Note: the `Host linux-builder` section in ssh config above is required
+  # for this to work. 
+  # To test, run: 
+  # nix build --impure --expr '(with import <nixpkgs> { system = "aarch64-linux"; }; runCommand "foo" {} "uname -a > $out")'
+  # Or:
+  # nix -L build github:tfc/nixos-integration-test-example
+  # To SSH directly into the builder, run:
+  # $ sudo chmod 644 /etc/nix/builder_ed25519
+  # $ ssh builder@linux-builder
+  # Then, to revert back to using it with nix build, run:
+  # $ sudo chmod 600 /etc/nix/builder_ed25519
+  nix.linux-builder = {
+    enable = true;
+    ephemeral = true;
+    maxJobs = 4;
+    config = {
+      virtualisation = {
+        darwin-builder = {
+          diskSize = 40 * 1024;
+          memorySize = 8 * 1024;
+        };
+        cores = 6;
+      };
+    };
+  };
+  # Enable logging for the linux builder
+  launchd.daemons.linux-builder = {
+    serviceConfig = {
+        StandardOutPath = "/var/log/darwin-builder.log";
+        StandardErrorPath = "/var/log/darwin-builder.log";
+    };
   };
 
   services = {
@@ -162,7 +192,6 @@
       extra-platforms = aarch64-darwin
     '';
 
-    linux-builder.enable = true;
     settings.trusted-users = [ "@admin" "${vars.user}" ];
   };
 
@@ -398,6 +427,24 @@
     editorconfig.enable = true;
 
     programs = {
+      ssh = {
+        enable = true;
+        addKeysToAgent = "yes";
+        extraConfig = ''
+        Include ~/.orbstack/ssh/config
+
+        IgnoreUnknown UseKeychain
+        UseKeychain yes
+
+        Host linux-builder
+          User builder
+          Hostname 127.0.0.1
+          HostKeyAlias linux-builder
+          IdentityFile /etc/nix/builder_ed25519
+          Port 31022
+        '';
+      };
+
       fzf = {
         enable = true;
         enableBashIntegration = true;
