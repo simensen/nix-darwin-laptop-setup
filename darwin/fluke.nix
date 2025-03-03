@@ -101,9 +101,9 @@
     };
   };
 
-  services = {
-    nix-daemon.enable = true;             # Auto-Upgrade Daemon
-  };
+  #services = {
+  #  nix-daemon.enable = true;             # Auto-Upgrade Daemon
+  #};
 
   #security.pam.enableSudoTouchIdAuth = true;
 
@@ -136,7 +136,7 @@
       #"font-source-sans-pro"
       #"font-source-serif-pro"
 
-      "adobe-creative-cloud"
+      #"adobe-creative-cloud"
       "balenaetcher"
       "betterdisplay"
       "bettertouchtool"
@@ -413,6 +413,7 @@
         lorri
         powerline-fonts
         sqlite
+        symfony-cli
         yq
         #zsh-git-prompt -- broken
         jetbrains.phpstorm
@@ -521,7 +522,6 @@
               visual_bell = '#d0d0df',
             },
             check_for_updates = false,
-            show_update_window = true,
             front_end = 'WebGpu',
           }
           '';
@@ -542,8 +542,10 @@
       starship.enableZshIntegration = true;
       starship.enableBashIntegration = false;
       starship.settings = {
-        format = "$all[λ](bright-black) $directory$character";
-        right_format = "$docker_context$container$os";
+        #format = "$all[λ](bright-black) $directory$character";
+        #right_format = "$docker_context$container$os";
+        format = "$shell$username$hostname$git_branch$git_status$git_commit$fill$battery$status$cmd_duration$all$kubernetes$container$os$line_break[λ](bright-black) $directory$jobs$character";
+        right_format = "";
         directory = {
           style = "bright-black";
           truncation_length = 4;
@@ -571,6 +573,10 @@
           style = "dimmed blue";
           format = "[$symbol$context]($style) ";
           symbol = " ";
+        };
+        fill = {
+          style = "#eeeeee";
+          symbol = " ";
         };
         git_branch = {
           style = "bold #A36AC7";
@@ -685,7 +691,7 @@
       git = {
         enable = true;
         userName = "Beau Simensen";
-        userEmail = "beau@dflydev.com";
+        userEmail = "beau@beausimensen.com";
         lfs = {
           enable = true;
         };
