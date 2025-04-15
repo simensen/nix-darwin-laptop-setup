@@ -7,7 +7,7 @@
 #       └─ <host>.nix
 #
 
-{ lib, inputs, nixpkgs, darwin, home-manager, vars, ...}:
+{ lib, system, linuxSystem, inputs, nixpkgs, darwin, home-manager, vars, ...}:
 
 let
   system = "aarch64-darwin";                                 # System Architecture
@@ -18,6 +18,18 @@ in
     inherit system;
     specialArgs = { inherit inputs vars; };
     modules = [                                             # Modules Used
+      {
+        nix.distributedBuilds = true;
+        nix.buildMachines = [{
+              hostName = "localhost";
+              sshUser = "builder";
+              sshKey = "/etc/nix/builder_ed25519";
+              system = "aarch64-linux";
+              maxJobs = 4;
+              supportedFeatures = [ "kvm" "benchmark" "big-parallel" ];
+          }];
+      }
+
       ./fluke.nix
       
       home-manager.darwinModules.home-manager {             # Home-Manager Module

@@ -48,6 +48,7 @@
     variables = {                         # Environment Variables
       EDITOR = "${vars.editor}";
       VISUAL = "${vars.editor}";
+      NIXPKGS_ALLOW_UNFREE = "1";
     };
     systemPackages = with pkgs; [         # System-Wide Packages
       # Terminal
@@ -115,9 +116,6 @@
       upgrade = false;
       cleanup = "zap";
     };
-    taps = [
-      "homebrew/cask-fonts"
-    ];
     brews = [
       #"wireguard-tools"
       #"libuvc" # nixpkgs does not support aarch64-darwin yet
@@ -137,6 +135,7 @@
       #"font-source-serif-pro"
 
       #"adobe-creative-cloud"
+      #"audacity"
       "balenaetcher"
       "betterdisplay"
       "bettertouchtool"
@@ -160,19 +159,13 @@
       "1Password for Safari" = 1569813296;
       "AdGuard for Safari" = 1440147259;
       "Adblock Plus" = 1432731683;
-      "Drafts" = 1435957248;
       "FakespotSafari" = 1592541616;
       "Fantastical" = 975937182;
       "GoodLinks" = 1474335294;
       "Goodnotes" = 1444383602;
       "Hologram Desktop" = 1529001798;
       "Infuse" = 1136220934;
-      "Microsoft Excel" = 462058435;
-      "Microsoft PowerPoint" = 462062816;
-      "Microsoft Word" = 462054704;
       "Mona" = 1659154653;
-      "Pins" = 1547106997;
-      "Pinstachio" = 1535386074;
       "Reeder" = 1529448980;
       "Slack" = 803453959;
       "Userscripts" = 1463298887;
@@ -192,7 +185,7 @@
       extra-platforms = aarch64-darwin
     '';
 
-    settings.trusted-users = [ "@admin" "${vars.user}" ];
+    settings.extra-trusted-users = [ "@admin" "${vars.user}" ];
   };
 
   system = {                              # Global macOS System Settings
@@ -389,7 +382,7 @@
       #};
     };
     activationScripts.postActivation.text = ''sudo chsh -s ${pkgs.zsh}/bin/zsh''; # Set Default Shell
-    stateVersion = 4;
+    stateVersion = 5;
   };
 
   home-manager.users.${vars.user} = {
