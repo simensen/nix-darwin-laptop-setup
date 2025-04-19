@@ -140,6 +140,7 @@
       "betterdisplay"
       "bettertouchtool"
       "dropbox"
+      "espanso"
       "figma"
       "firefox"
       "makemkv"
