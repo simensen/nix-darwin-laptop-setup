@@ -12,16 +12,16 @@
   description = "Nix Darwin System Flake Configuration";
 
   inputs =                                                                  # References Used by Flake
-    {
-      nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+  {
+      nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
 
       home-manager = {                                                      # User Environment Manager
-        url = "github:nix-community/home-manager";
+        url = "github:nix-community/home-manager/release-25.05";
         inputs.nixpkgs.follows = "nixpkgs";
       };
 
       darwin = {                                                            # MacOS Package Management
-        url = "github:nix-darwin/nix-darwin/master";
+        url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
         inputs.nixpkgs.follows = "nixpkgs";
       };
     };

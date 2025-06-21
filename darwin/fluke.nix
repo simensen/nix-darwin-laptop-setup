@@ -26,24 +26,24 @@
   };
 
   environment = {
-    etc = {
-      "hosts" = {
-        text = ''
-            ##
-            # Host Database
-            #
-            # localhost is used to configure the loopback interface
-            # when the system is booting.  Do not change this entry.
-            ##
-            127.0.0.1       localhost
-            255.255.255.255 broadcasthost
-            ::1             localhost
-
-            # reverse-proxy.traefik-development.orb.local
-            192.168.247.5 prdeploy.test
-          '';
-      };
-    };
+    #etc = {
+      # "hosts" = {
+      #   text = ''
+      #       ##
+      #       # Host Database
+      #       #
+      #       # localhost is used to configure the loopback interface
+      #       # when the system is booting.  Do not change this entry.
+      #       ##
+      #       127.0.0.1       localhost
+      #       255.255.255.255 broadcasthost
+      #       ::1             localhost
+      #
+      #       # reverse-proxy.traefik-development.orb.local
+      #       192.168.247.5 prdeploy.test
+      #   '';
+      #};
+    #};
     shells = with pkgs; [ zsh bash ];          # Default Shell
     variables = {                         # Environment Variables
       EDITOR = "${vars.editor}";
@@ -190,6 +190,7 @@
   };
 
   system = {                              # Global macOS System Settings
+    primaryUser = "beausimensen";
     defaults = {
 
       CustomSystemPreferences = {
@@ -399,6 +400,7 @@
       file.".config/zsh_nix/custom/plugins/git-prompt.zsh/git-prompt.plugin.zsh".source = ../config/git-prompt.zsh/git-prompt.plugin.zsh;
 
       packages = with pkgs; [
+        claude-code
         coreutils
         curl
         graphviz
