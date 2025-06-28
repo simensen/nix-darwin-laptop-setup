@@ -13,15 +13,19 @@
 
   inputs =                                                                  # References Used by Flake
   {
-      nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
+      #nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
+      nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+      #nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
       home-manager = {                                                      # User Environment Manager
-        url = "github:nix-community/home-manager/release-25.05";
+        #url = "github:nix-community/home-manager/release-25.05";
+        url = "github:nix-community/home-manager";
         inputs.nixpkgs.follows = "nixpkgs";
       };
 
       darwin = {                                                            # MacOS Package Management
-        url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+        #url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+        url = "github:nix-darwin/nix-darwin";
         inputs.nixpkgs.follows = "nixpkgs";
       };
     };
@@ -35,7 +39,7 @@
         editor = "vim";
       };
       system = "aarch64-darwin";
-      pkgs = nixpkgs.legacyPackages."${system}";
+      pkgs =  nixpkgs.legacyPackages."${system}";
       linuxSystem = builtins.replaceStrings [ "darwin" ] [ "linux" ] system;
       darwin-builder = nixpkgs.lib.nixosSystem {
         system = linuxSystem;
