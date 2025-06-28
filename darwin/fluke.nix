@@ -450,7 +450,12 @@
 
         Host pi4-0 pi4-0.lan.home.simensen.io
           User dietpi
-          Hostname pi4-0.home.simensen.io
+          Hostname pi4-0.lan.home.simensen.io
+          IdentityFile ~/.ssh/id_ed25519
+
+        Host edge edge.lan.home.simensen.io
+          User ubnt
+          Hostname edge.lan.home.simensen.io
           IdentityFile ~/.ssh/id_ed25519
         '';
       };
