@@ -162,6 +162,7 @@
       "Adblock Plus" = 1432731683;
       "FakespotSafari" = 1592541616;
       "Fantastical" = 975937182;
+      "Focus – Productivity Timer" = 777233759;
       "GoodLinks" = 1474335294;
       "Goodnotes" = 1444383602;
       "Hologram Desktop" = 1529001798;
@@ -390,6 +391,9 @@
   home-manager.users.${vars.user} = {
 
     home = {
+      shellAliases = {
+        setup = "( cd ~/.setup && git remote update && ( git rebase || true ) && sudo bash -c 'env NIXPKGS_ALLOW_UNFREE=1 darwin-rebuild switch --impure --flake .#fluke')";
+      };
       sessionVariables = {
         HELLO_BEAU_SESSION_ENV = "What is even up?";
       };
@@ -407,9 +411,11 @@
         id3v2
         lolcat
         lorri
+        mas
         powerline-fonts
         sqlite
         symfony-cli
+        uv
         yq
         #zsh-git-prompt -- broken
         jetbrains.phpstorm
@@ -683,12 +689,10 @@
         syntaxHighlighting.enable = true;
         history.size = 10000;
 
-        initExtraFirst = ''
+        initContent = let zshConfigEarlyInit = pkgs.lib.mkOrder 500 ''
           # Remove history data we don't want to see
           export HISTIGNORE="pwd:ls:cd"
-        '';
-
-        initExtra = ''
+        ''; zshConfig = pkgs.lib.mkOrder 1000 ''
           unsetopt nomatch
 
           for file in ~/{.setup,.setup-custom}/.{exports,aliases,functions}; do
@@ -699,7 +703,7 @@
           for file in ~/{.setup,.setup-custom}/.{shellrc,projects}.d/*; do
               [ -r "$file" ] && [ -f "$file" ] && source "$file"
           done
-        '';
+        ''; in pkgs.lib.mkMerge [ zshConfigEarlyInit zshConfig ];
       };
 
       git = {
