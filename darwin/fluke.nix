@@ -466,6 +466,10 @@
         '';
       };
 
+      gh = {
+        enable = true;
+      };
+
       fzf = {
         enable = true;
         enableBashIntegration = true;
@@ -833,6 +837,9 @@
           ".composer"
           ".config"
           ".subversion"
+          ""
+          "# Claude Code"
+          ".claude/*.local.json"
         ];
       };
 
