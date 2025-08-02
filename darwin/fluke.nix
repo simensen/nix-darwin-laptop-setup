@@ -404,6 +404,7 @@
       file.".config/zsh_nix/custom/plugins/git-prompt.zsh/git-prompt.plugin.zsh".source = ../config/git-prompt.zsh/git-prompt.plugin.zsh;
 
       packages = with pkgs; [
+        aider-chat
         claude-code
         coreutils
         curl
@@ -412,6 +413,7 @@
         lolcat
         lorri
         mas
+        openssl
         powerline-fonts
         sqlite
         symfony-cli
