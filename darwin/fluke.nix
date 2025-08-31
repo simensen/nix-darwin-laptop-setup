@@ -120,8 +120,13 @@
       #"wireguard-tools"
       #"libuvc" # nixpkgs does not support aarch64-darwin yet
       #"handbrake"
+      "codex"
+      "mactop"
+      "terminal-notifier"
     ];
     casks = [
+      "claude-code"
+      "claudia"
       #"moonlight"
       #"plex-media-player"
       "font-hack-nerd-font"
@@ -160,13 +165,14 @@
       "1Password for Safari" = 1569813296;
       "AdGuard for Safari" = 1440147259;
       "Adblock Plus" = 1432731683;
-      "FakespotSafari" = 1592541616;
+      #"FakespotSafari" = 1592541616;
       "Fantastical" = 975937182;
       "Focus – Productivity Timer" = 777233759;
       "GoodLinks" = 1474335294;
       "Goodnotes" = 1444383602;
       "Hologram Desktop" = 1529001798;
       "Infuse" = 1136220934;
+      "Amazon Kindle" = 302584613;
       "Mona" = 1659154653;
       "Reeder" = 1529448980;
       "Slack" = 803453959;
@@ -404,10 +410,14 @@
       file.".config/zsh_nix/custom/plugins/git-prompt.zsh/git-prompt.plugin.zsh".source = ../config/git-prompt.zsh/git-prompt.plugin.zsh;
 
       packages = with pkgs; [
-        aider-chat
-        claude-code
+        #aider-chat
+        ansi2html
+        ansifilter
+        #claude-code
         coreutils
         curl
+        devcontainer
+        glow
         graphviz
         id3v2
         lolcat
@@ -437,7 +447,12 @@
       };
       ssh = {
         enable = true;
-        addKeysToAgent = "yes";
+        enableDefaultConfig = false;
+        matchBlocks = {
+          "*" = {
+            addKeysToAgent = "yes";
+          };
+        };
         extraConfig = ''
         Include ~/.orbstack/ssh/config
 
