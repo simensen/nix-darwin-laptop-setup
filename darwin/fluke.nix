@@ -126,7 +126,7 @@
     ];
     casks = [
       "claude-code"
-      "claudia"
+      #"claudia"
       #"moonlight"
       #"plex-media-player"
       "font-hack-nerd-font"
@@ -151,7 +151,7 @@
       "makemkv"
       "microsoft-edge"
       "obsidian"
-      "openphone"
+      #"openphone"
       "orbstack"
       "rekordbox"
       "rocket"
