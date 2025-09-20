@@ -411,6 +411,7 @@
 
       packages = with pkgs; [
         #aider-chat
+        amp-cli
         ansi2html
         ansifilter
         #claude-code
